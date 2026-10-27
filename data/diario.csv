@@ -1,0 +1,317 @@
+data,conta,investimento,impressoes,cliques,conversas,leads_meta,leads_site,compras,valor_compras
+2026-08-01,De bem imob,30.88,1021,15,6,null,null,null,null
+2026-08-01,LUCAS IMOVEIS,15.85,551,7,6,null,null,null,null
+2026-08-01,Murilo Anúncios,52.06,5060,167,null,null,null,1,87
+2026-08-01,Pratinho guia,21.75,1462,28,null,null,null,1,22.9
+2026-08-02,De bem imob,34.95,1394,17,3,null,null,null,null
+2026-08-02,LUCAS IMOVEIS,25.21,1035,14,11,null,null,null,null
+2026-08-02,Murilo Anúncios,55.89,4905,155,2,null,null,2,175.26
+2026-08-02,Pratinho guia,29.53,2298,32,null,null,null,1,22.9
+2026-08-03,De bem imob,33.4,1200,14,2,null,null,null,null
+2026-08-03,LUCAS IMOVEIS,21.41,842,7,10,null,null,null,null
+2026-08-03,Murilo Anúncios,49.06,4298,129,1,null,null,1,88.26
+2026-08-03,Pratinho guia,32.86,2127,32,null,null,null,3,68.7
+2026-08-03,bruno cell,130.98,2656,149,72,null,null,null,null
+2026-08-04,De bem imob,37.85,932,14,4,null,null,null,null
+2026-08-04,LUCAS IMOVEIS,20.26,625,12,8,null,null,null,null
+2026-08-04,Murilo Anúncios,63.49,4333,126,1,null,null,5,441.3
+2026-08-04,Pratinho guia,55.89,2875,42,null,null,null,3,68.7
+2026-08-04,bruno cell,117.56,2618,140,62,null,null,null,null
+2026-08-05,De bem imob,23.71,676,11,2,null,null,null,null
+2026-08-05,LUCAS IMOVEIS,21.5,961,5,4,null,null,null,null
+2026-08-05,Murilo Anúncios,50.84,3948,114,null,null,null,1,88.26
+2026-08-05,Pratinho guia,34.84,1953,50,null,null,null,3,68.7
+2026-08-05,bruno cell,109.59,2547,151,62,null,null,null,null
+2026-08-06,De bem imob,24.78,549,7,2,null,null,null,null
+2026-08-06,LUCAS IMOVEIS,15.14,823,4,3,null,null,null,null
+2026-08-06,Murilo Anúncios,47.87,3786,91,3,null,null,null,null
+2026-08-06,Pratinho guia,42.69,2477,53,null,null,null,2,45.8
+2026-08-06,bruno cell,86.92,2261,117,47,null,null,null,null
+2026-08-07,De bem imob,33.93,473,6,2,null,null,null,null
+2026-08-07,LUCAS IMOVEIS,3.79,211,1,4,null,null,null,null
+2026-08-07,Murilo Anúncios,51.14,4036,75,2,null,null,1,88.26
+2026-08-07,Pratinho guia,57.86,2900,54,null,null,null,5,114.5
+2026-08-07,bruno cell,71.33,1667,122,60,null,null,null,null
+2026-08-08,De bem imob,20.28,580,5,1,null,null,null,null
+2026-08-08,LUCAS IMOVEIS,0.07,7,null,1,null,null,null,null
+2026-08-08,Murilo Anúncios,25.82,2226,65,1,null,null,null,null
+2026-08-08,Pratinho guia,41.92,1938,38,null,null,null,null,null
+2026-08-08,bruno cell,77.68,2027,151,65,null,null,null,null
+2026-08-09,De bem imob,56.83,3781,98,5,null,null,null,null
+2026-08-09,LUCAS IMOVEIS,45.39,1886,53,3,null,null,null,null
+2026-08-09,Murilo Anúncios,79.3,5975,132,2,null,null,null,null
+2026-08-09,Pratinho guia,33.58,1970,31,null,null,null,3,68.7
+2026-08-09,bruno cell,102.53,2657,187,86,null,null,null,null
+2026-08-10,De bem imob,57.5,2543,67,12,null,null,null,null
+2026-08-10,LUCAS IMOVEIS,40.06,1737,62,7,null,null,null,null
+2026-08-10,Murilo Anúncios,44.57,3671,79,null,null,null,null,null
+2026-08-10,Pratinho guia,39.1,2184,40,null,null,null,1,22.9
+2026-08-10,bruno cell,103.64,3484,178,72,null,null,null,null
+2026-08-11,De bem imob,63.86,1735,38,14,null,null,null,null
+2026-08-11,LUCAS IMOVEIS,38.65,1549,55,8,null,null,null,null
+2026-08-11,Murilo Anúncios,43.75,2979,59,3,null,null,null,null
+2026-08-11,Pratinho guia,52.82,3408,61,null,null,null,2,45.8
+2026-08-11,bruno cell,122.3,4560,243,81,null,null,null,null
+2026-08-12,De bem imob,36.79,1131,8,2,null,null,null,null
+2026-08-12,LUCAS IMOVEIS,36.77,1563,61,5,null,null,null,null
+2026-08-12,Murilo Anúncios,41.94,3058,71,12,null,null,null,null
+2026-08-12,Pratinho guia,49.77,2749,35,null,null,null,null,null
+2026-08-12,bruno cell,89.02,2709,150,57,null,null,null,null
+2026-08-13,De bem imob,58.36,1951,36,7,null,null,null,null
+2026-08-13,LUCAS IMOVEIS,22.37,1020,30,4,null,null,null,null
+2026-08-13,Murilo Anúncios,64.64,3287,101,null,null,null,5,440.04
+2026-08-13,Pratinho guia,18.64,891,18,null,null,null,null,null
+2026-08-13,bruno cell,100.57,2499,183,77,null,null,null,null
+2026-08-14,De bem imob,53.43,1582,51,5,null,null,null,null
+2026-08-14,LUCAS IMOVEIS,1.26,93,5,null,null,null,null,null
+2026-08-14,Murilo Anúncios,79.33,4226,145,2,null,null,null,null
+2026-08-14,Pratinho guia,36.75,1630,22,null,null,null,null,null
+2026-08-14,bruno cell,91.14,2618,168,63,null,null,null,null
+2026-08-15,De bem imob,37.58,1453,39,4,null,null,null,null
+2026-08-15,LUCAS IMOVEIS,9.97,784,66,null,null,null,null,null
+2026-08-15,Murilo Anúncios,37.98,2259,43,2,null,null,2,176.52
+2026-08-15,Pratinho guia,23.25,424,24,null,null,null,null,null
+2026-08-15,bruno cell,84.29,2940,195,55,null,null,null,null
+2026-08-16,De bem imob,0.03,9,null,null,null,null,null,null
+2026-08-16,LUCAS IMOVEIS,7.33,717,51,null,null,null,null,null
+2026-08-16,Murilo Anúncios,36.28,2548,49,null,null,null,null,null
+2026-08-16,Pratinho guia,19.36,371,14,null,null,null,null,null
+2026-08-16,bruno cell,126.85,3350,232,91,null,null,null,null
+2026-08-17,De bem imob,40.22,1646,43,3,null,null,null,null
+2026-08-17,LUCAS IMOVEIS,65.79,2593,73,14,null,null,null,null
+2026-08-17,Murilo Anúncios,1.41,200,null,null,null,null,null,null
+2026-08-17,Pratinho guia,18.37,395,13,null,null,null,null,null
+2026-08-17,bruno cell,121.3,3715,221,97,null,null,null,null
+2026-08-18,De bem imob,63.02,2004,69,8,null,null,null,null
+2026-08-18,LUCAS IMOVEIS,31.09,1425,41,12,null,null,null,null
+2026-08-18,Murilo Anúncios,43.93,3215,60,null,null,null,1,87
+2026-08-18,bruno cell,80.35,2394,160,71,null,null,null,null
+2026-08-18,vision imobiliaria,24.63,847,25,null,null,null,null,null
+2026-08-19,De bem imob,60.86,1640,48,3,null,null,null,null
+2026-08-19,LUCAS IMOVEIS,0.03,6,null,null,null,null,null,null
+2026-08-19,Murilo Anúncios,55.09,3344,69,1,null,null,1,87
+2026-08-19,bruno cell,114.3,2675,163,71,null,null,null,null
+2026-08-20,De bem imob,40.73,1639,50,7,null,null,null,null
+2026-08-20,LUCAS IMOVEIS,65.67,2404,95,32,null,null,null,null
+2026-08-20,Murilo Anúncios,31.65,1497,46,2,null,null,1,88.26
+2026-08-20,bruno cell,86.13,2651,133,58,null,null,null,null
+2026-08-20,vision imobiliaria,39.22,386,52,null,null,null,null,null
+2026-08-21,De bem imob,55.12,1291,62,2,null,null,null,null
+2026-08-21,LUCAS IMOVEIS,22.18,1118,50,3,null,null,null,null
+2026-08-21,Murilo Anúncios,49.58,2762,64,1,null,null,3,264.78
+2026-08-21,bruno cell,85.71,2593,159,76,null,null,null,null
+2026-08-21,vision imobiliaria,43.85,478,51,null,null,null,null,null
+2026-08-22,De bem imob,52.54,2065,58,3,null,null,null,null
+2026-08-22,Murilo Anúncios,38.9,2302,51,null,null,null,null,null
+2026-08-22,bruno cell,82.94,3069,143,58,null,null,null,null
+2026-08-22,vision imobiliaria,29.8,404,37,null,null,null,null,null
+2026-08-23,De bem imob,60.8,2560,83,2,null,null,null,null
+2026-08-23,Murilo Anúncios,0.47,26,null,null,null,null,null,null
+2026-08-23,bruno cell,133.36,3533,216,97,null,null,null,null
+2026-08-23,vision imobiliaria,11.09,142,8,null,null,null,null,null
+2026-08-24,De bem imob,65.95,2404,81,7,null,null,null,null
+2026-08-24,Personal Marcos filho,97.27,1568,141,null,null,null,1,197
+2026-08-24,bruno cell,111.52,3107,199,92,null,null,null,null
+2026-08-25,De bem imob,58.52,2323,76,7,null,null,null,null
+2026-08-25,LUCAS IMOVEIS,37.57,1815,77,6,null,null,null,null
+2026-08-25,Murilo Anúncios,41.93,2659,66,null,null,null,null,null
+2026-08-25,Personal Marcos filho,79.24,1016,83,null,null,null,null,null
+2026-08-25,bruno cell,103.41,3651,221,88,null,null,null,null
+2026-08-26,De bem imob,63.2,2471,96,3,2,null,null,null
+2026-08-26,LUCAS IMOVEIS,36.21,1869,95,7,null,null,null,null
+2026-08-26,Murilo Anúncios,33.37,1861,61,null,null,null,1,88.26
+2026-08-26,Personal Marcos filho,23.28,399,23,null,null,null,null,null
+2026-08-26,bruno cell,97.16,2933,158,62,null,null,null,null
+2026-08-27,De bem imob,49.44,2172,84,1,1,null,null,null
+2026-08-27,LUCAS IMOVEIS,35.09,1758,84,8,null,null,null,null
+2026-08-27,Murilo Anúncios,43.4,3001,70,null,null,null,1,88.26
+2026-08-27,Personal Marcos filho,47.36,674,63,null,null,null,null,null
+2026-08-27,bruno cell,87.31,2423,139,58,null,null,null,null
+2026-08-28,De bem imob,49.05,1588,70,6,null,null,null,null
+2026-08-28,LUCAS IMOVEIS,33.54,2439,161,6,null,null,null,null
+2026-08-28,Murilo Anúncios,34.5,2185,42,null,null,null,1,88.26
+2026-08-28,Personal Marcos filho,11,145,5,null,null,null,null,null
+2026-08-28,bruno cell,92.63,2551,134,66,null,null,null,null
+2026-08-29,De bem imob,37.43,1275,41,4,null,null,null,null
+2026-08-29,LUCAS IMOVEIS,25.01,627,4,4,null,null,null,null
+2026-08-29,Murilo Anúncios,43.26,2336,39,null,null,null,null,null
+2026-08-29,bruno cell,72.08,2225,109,41,null,null,null,null
+2026-08-30,De bem imob,51.05,2193,42,4,null,null,null,null
+2026-08-30,LUCAS IMOVEIS,52.1,3411,33,5,null,null,null,null
+2026-08-30,Murilo Anúncios,62.44,3742,62,null,null,null,1,88.26
+2026-08-30,bruno cell,112.59,3345,202,97,null,null,null,null
+2026-08-31,De bem imob,58.23,2003,57,3,null,null,null,null
+2026-08-31,LUCAS IMOVEIS,33.24,2549,25,5,2,null,null,null
+2026-08-31,Murilo Anúncios,40.85,2585,46,null,null,null,null,null
+2026-08-31,bruno cell,137.6,4858,219,74,null,null,null,null
+2026-09-01,De bem imob,46.93,1699,32,4,null,null,null,null
+2026-09-01,LUCAS IMOVEIS,42.15,3140,38,4,null,null,null,null
+2026-09-01,Murilo Anúncios,41.37,2787,78,null,null,null,1,88.26
+2026-09-01,Pratinho guia,22.33,984,22,null,null,null,null,null
+2026-09-01,bruno cell,87.69,3251,143,54,null,null,null,null
+2026-09-02,De bem imob,25.39,1353,50,3,null,null,null,null
+2026-09-02,LUCAS IMOVEIS,65.24,2813,33,5,1,null,null,null
+2026-09-02,Murilo Anúncios,43.09,2908,76,null,null,null,1,88.26
+2026-09-02,bruno cell,109.26,3659,185,78,null,null,null,null
+2026-09-03,De bem imob,35.85,1798,31,2,null,null,null,null
+2026-09-03,LUCAS IMOVEIS,55.43,2393,126,10,null,null,null,null
+2026-09-03,Murilo Anúncios,43.97,2315,71,null,null,null,null,null
+2026-09-03,bruno cell,96.77,2791,156,74,null,null,null,null
+2026-09-04,De bem imob,104.43,2886,63,11,null,null,null,null
+2026-09-04,LUCAS IMOVEIS,46.63,1667,68,7,null,null,null,null
+2026-09-04,Murilo Anúncios,44.81,3264,95,2,null,null,1,88.26
+2026-09-04,bruno cell,64.21,1879,89,44,null,null,null,null
+2026-09-05,De bem imob,62.16,1761,60,6,null,null,null,null
+2026-09-05,LUCAS IMOVEIS,38.11,1535,72,9,null,null,null,null
+2026-09-05,Murilo Anúncios,53.95,2914,70,1,null,null,3,263.52
+2026-09-05,bruno cell,19.11,730,27,11,null,null,null,null
+2026-09-06,De bem imob,59.06,1442,63,6,null,null,null,null
+2026-09-06,LUCAS IMOVEIS,63.08,2070,100,3,null,null,null,null
+2026-09-06,Murilo Anúncios,66.13,4045,93,1,null,null,null,null
+2026-09-06,bruno cell,0.02,14,null,null,null,null,null,null
+2026-09-07,De bem imob,2.75,158,1,null,null,null,null,null
+2026-09-07,LUCAS IMOVEIS,61.2,2219,119,3,2,null,null,null
+2026-09-07,Murilo Anúncios,42.33,2995,53,null,null,null,null,null
+2026-09-07,bruno cell,88.98,1490,117,59,null,null,null,null
+2026-09-08,De bem imob,89.33,2288,61,7,null,null,null,null
+2026-09-08,LUCAS IMOVEIS,32.27,1520,139,1,null,null,null,null
+2026-09-08,Murilo Anúncios,21.53,1599,30,null,null,null,null,null
+2026-09-08,Personal Marcos filho,22.85,655,4,null,null,null,null,null
+2026-09-08,bruno cell,132.6,2446,140,59,null,null,null,null
+2026-09-09,De bem imob,64.09,1527,41,6,null,null,null,null
+2026-09-09,LUCAS IMOVEIS,16.09,589,19,1,null,null,null,null
+2026-09-09,Murilo Anúncios,1.99,245,5,1,null,null,null,null
+2026-09-09,Personal Marcos filho,24,858,4,1,null,null,null,null
+2026-09-09,bruno cell,147.64,3654,162,59,null,null,null,null
+2026-09-10,De bem imob,38.52,1498,34,1,null,null,null,null
+2026-09-10,LUCAS IMOVEIS,5.95,629,37,null,1,null,null,null
+2026-09-10,Personal Marcos filho,39.51,4114,73,null,null,null,null,null
+2026-09-10,bruno cell,70.02,2143,89,34,null,null,null,null
+2026-09-11,De bem imob,50.41,2232,52,3,null,null,null,null
+2026-09-11,LUCAS IMOVEIS,12.37,1346,94,1,null,null,null,null
+2026-09-11,Personal Marcos filho,16.82,3330,131,null,null,null,null,null
+2026-09-11,bruno cell,119.38,2452,128,50,null,null,null,null
+2026-09-12,De bem imob,42.33,2927,43,1,null,null,null,null
+2026-09-12,LUCAS IMOVEIS,15.84,1613,114,2,null,null,null,null
+2026-09-12,Personal Marcos filho,24.01,3524,120,null,null,null,null,null
+2026-09-12,bruno cell,133.97,3457,222,94,null,null,null,null
+2026-09-13,De bem imob,52.03,2749,44,2,null,null,null,null
+2026-09-13,LUCAS IMOVEIS,13.05,1434,96,null,null,null,null,null
+2026-09-13,Personal Marcos filho,0.14,43,3,null,null,null,null,null
+2026-09-13,bruno cell,99.97,2681,157,56,null,null,null,null
+2026-09-14,De bem imob,14.71,1236,22,null,null,null,null,null
+2026-09-14,LUCAS IMOVEIS,10.2,1294,86,2,null,null,null,null
+2026-09-14,bruno cell,147.98,4237,204,78,null,null,null,null
+2026-09-15,De bem imob,61.99,2008,53,2,null,null,null,null
+2026-09-15,LUCAS IMOVEIS,8.44,948,69,null,null,null,null,null
+2026-09-15,Murilo Anúncios,33.15,2190,77,1,null,null,null,null
+2026-09-15,bruno cell,108.53,3931,174,68,null,null,null,null
+2026-09-16,De bem imob,69.94,1945,44,6,1,null,null,null
+2026-09-16,LUCAS IMOVEIS,8.97,1019,63,null,null,null,null,null
+2026-09-16,Murilo Anúncios,31.73,1862,53,1,null,null,null,null
+2026-09-16,bruno cell,103.06,3183,166,68,null,null,null,null
+2026-09-17,De bem imob,53.54,1718,57,3,null,null,null,null
+2026-09-17,LUCAS IMOVEIS,47.13,2018,96,3,null,null,null,null
+2026-09-17,bruno cell,89.66,3248,126,48,null,null,null,null
+2026-09-18,De bem imob,53.72,1862,67,4,null,null,null,null
+2026-09-18,LUCAS IMOVEIS,30.14,1780,108,7,null,null,null,null
+2026-09-18,bruno cell,68.41,2708,126,53,null,null,null,null
+2026-09-19,De bem imob,42.62,1861,49,5,null,null,null,null
+2026-09-19,LUCAS IMOVEIS,31.9,1741,60,2,null,null,null,null
+2026-09-19,bruno cell,77.81,3340,158,70,null,null,null,null
+2026-09-20,De bem imob,62.18,2424,64,7,null,null,null,null
+2026-09-20,LUCAS IMOVEIS,57.95,3041,120,5,1,null,null,null
+2026-09-20,bruno cell,104.86,3496,185,89,null,null,null,null
+2026-09-21,De bem imob,61.27,1765,39,5,null,null,null,null
+2026-09-21,LUCAS IMOVEIS,51.02,1555,51,6,1,null,null,null
+2026-09-21,bruno cell,127.42,3471,144,54,null,null,null,null
+2026-09-22,De bem imob,59.35,1700,43,2,null,null,null,null
+2026-09-22,LUCAS IMOVEIS,28.41,1180,54,5,null,null,null,null
+2026-09-22,bruno cell,142.37,4680,262,110,null,null,null,null
+2026-09-23,De bem imob,71.64,1894,46,4,null,null,null,null
+2026-09-23,LUCAS IMOVEIS,36.75,1493,70,6,2,null,null,null
+2026-09-23,Nall designer,26.48,1279,13,4,null,null,null,null
+2026-09-23,bruno cell,77.05,2421,133,50,null,null,null,null
+2026-09-24,De bem imob,77.5,2084,39,8,null,null,null,null
+2026-09-24,LUCAS IMOVEIS,36.03,1308,63,10,null,null,null,null
+2026-09-24,Nall designer,21.87,864,4,null,null,null,null,null
+2026-09-24,bruno cell,128.32,3674,176,69,null,null,null,null
+2026-09-25,De bem imob,76.18,2614,55,4,null,null,null,null
+2026-09-25,LUCAS IMOVEIS,28.44,1097,45,3,null,null,null,null
+2026-09-25,Nall designer,28.5,1141,8,4,null,null,null,null
+2026-09-25,bruno cell,133.4,3628,201,93,null,null,null,null
+2026-09-26,De bem imob,80,3057,55,7,null,null,null,null
+2026-09-26,LUCAS IMOVEIS,21.68,1077,34,5,null,null,null,null
+2026-09-26,Nall designer,28.39,1276,8,2,null,null,null,null
+2026-09-26,bruno cell,108.75,4493,183,74,null,null,null,null
+2026-09-27,De bem imob,69.14,3192,69,8,null,null,null,null
+2026-09-27,LUCAS IMOVEIS,20.94,1163,46,3,null,null,null,null
+2026-09-27,Nall designer,24.05,770,5,1,null,null,null,null
+2026-09-27,bruno cell,125.54,7188,231,105,null,null,null,null
+2026-09-28,De bem imob,76.37,2670,61,9,null,null,null,null
+2026-09-28,LUCAS IMOVEIS,39.42,1710,65,5,null,null,null,null
+2026-09-28,Nall designer,2.49,139,null,1,null,null,null,null
+2026-09-28,bruno cell,206.93,9033,302,136,null,null,null,null
+2026-09-29,De bem imob,48.92,1303,53,3,null,null,null,null
+2026-09-29,LUCAS IMOVEIS,25.49,1323,65,4,null,null,null,null
+2026-09-29,bruno cell,161.64,5156,244,103,null,null,null,null
+2026-09-30,De bem imob,2,141,6,null,null,null,null,null
+2026-09-30,LUCAS IMOVEIS,50.86,2187,59,8,null,null,null,null
+2026-09-30,bruno cell,133.01,8463,243,91,null,null,null,null
+2026-10-01,LUCAS IMOVEIS,16.37,962,35,1,null,null,null,null
+2026-10-01,bruno cell,141.94,8421,224,91,null,null,null,null
+2026-10-02,LUCAS IMOVEIS,0.02,3,null,null,null,null,null,null
+2026-10-02,bruno cell,123.29,4341,201,84,null,null,null,null
+2026-10-03,bruno cell,67.54,2377,142,62,1,null,null,null
+2026-10-04,bruno cell,45.05,1554,95,43,null,null,null,null
+2026-10-05,bruno cell,0.19,53,null,null,null,null,null,null
+2026-10-06,bruno cell,120.24,3791,181,75,null,null,null,null
+2026-10-07,Nall designer,37.26,1896,11,2,null,null,null,null
+2026-10-07,bruno cell,165.84,6494,265,108,null,null,null,null
+2026-10-08,Nall designer,2,193,6,1,null,null,null,null
+2026-10-08,bruno cell,130.7,4725,200,97,null,null,null,null
+2026-10-09,Nall designer,13.99,654,3,null,null,null,null,null
+2026-10-09,bruno cell,135.06,5303,210,104,null,null,null,null
+2026-10-10,Murilo Anúncios,26.04,1694,57,null,null,null,1,87.51
+2026-10-10,Nall designer,26.95,978,5,2,null,null,null,null
+2026-10-10,bruno cell,133.09,4551,221,89,null,null,null,null
+2026-10-11,Murilo Anúncios,26.63,1451,53,1,null,null,null,null
+2026-10-11,Nall designer,3.25,119,null,null,null,null,null,null
+2026-10-11,bruno cell,131.53,4236,213,94,null,null,null,null
+2026-10-12,Murilo Anúncios,32.12,1920,55,null,null,null,null,null
+2026-10-12,bruno cell,171.57,15682,310,117,null,null,null,null
+2026-10-13,Murilo Anúncios,27.33,2005,45,null,null,null,null,null
+2026-10-13,Nall designer,22.06,802,5,2,null,null,null,null
+2026-10-13,bruno cell,108.52,5368,189,66,null,null,null,null
+2026-10-14,Murilo Anúncios,7.57,635,19,null,null,null,null,null
+2026-10-14,Nall designer,4.27,236,2,null,null,null,null,null
+2026-10-14,bruno cell,114.11,5362,204,78,null,null,null,null
+2026-10-15,Murilo Anúncios,0.01,22,null,null,null,null,null,null
+2026-10-15,bruno cell,111.28,6175,191,60,null,null,null,null
+2026-10-16,bruno cell,136.65,14228,298,86,null,null,null,null
+2026-10-17,bruno cell,120.97,11010,264,81,null,null,null,null
+2026-10-18,Murilo Anúncios,32.97,2722,104,1,null,null,null,null
+2026-10-18,bruno cell,105.06,11419,257,84,null,null,null,null
+2026-10-19,Murilo Anúncios,30.88,2439,62,3,null,null,1,87.51
+2026-10-19,bruno cell,205.87,11107,330,137,null,null,null,null
+2026-10-20,Murilo Anúncios,33.9,2217,51,4,null,null,1,87.51
+2026-10-20,bruno cell,163.08,7829,282,112,null,null,null,null
+2026-10-21,Murilo Anúncios,56.68,4666,155,null,null,null,null,null
+2026-10-21,bruno cell,136,6857,296,89,null,null,null,null
+2026-10-22,LUCAS IMOVEIS,41.62,1503,54,10,null,null,null,null
+2026-10-22,Murilo Anúncios,11.7,1514,105,null,null,null,null,null
+2026-10-22,bruno cell,14.24,808,31,13,null,null,null,null
+2026-10-23,LUCAS IMOVEIS,35.58,1804,75,8,null,null,null,null
+2026-10-23,Murilo Anúncios,6.94,1068,72,null,null,null,null,null
+2026-10-23,bruno cell,222.86,10537,476,127,null,null,null,null
+2026-10-24,LUCAS IMOVEIS,39.39,2093,75,5,null,null,null,null
+2026-10-24,Murilo Anúncios,46.03,4368,168,2,null,null,null,null
+2026-10-24,bruno cell,125.37,5381,257,77,null,null,null,null
+2026-10-25,LUCAS IMOVEIS,39.35,2158,72,8,null,null,null,null
+2026-10-25,Murilo Anúncios,47.05,3490,168,1,null,null,null,null
+2026-10-26,LUCAS IMOVEIS,26.16,1645,74,5,null,null,null,null
+2026-10-26,Murilo Anúncios,37.01,3331,163,3,null,null,4,350.04
+2026-10-26,bruno cell,144.86,4820,217,94,null,null,null,null
+2026-10-27,LUCAS IMOVEIS,35.5,1484,40,12,null,null,null,null
+2026-10-27,Murilo Anúncios,36.81,2688,88,2,null,null,null,null
+2026-10-27,bruno cell,15.02,473,25,10,null,null,null,null

@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Albuquerque Ads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-anthropic-sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-anthropic-serif: "Source Serif 4", Georgia, serif;
+    --color-fg: #1f1e1c; --color-fg-muted: #6b6862; --color-bg: #faf9f6; --color-panel: #ffffff;
+    --color-border-line: #e6e3dc; --color-ok: #1f8a4c; --color-warn: #b7791f; --color-bad: #c43c32;
+    --cds-text-secondary: #6b6862; --cds-surface-popover: #ffffff; --cds-border: #e6e3dc;
+    --cds-shadow-popover: 0 6px 20px rgba(0,0,0,.12);
+    --cds-chart-grid: #eeebe5; --cds-chart-axis: #c9c5bc; --cds-chart-reference: #9c978d; --cds-chart-muted: #cfcbc2;
+    --cds-font-size-caption: 12.5px; --cds-font-size-body: 14.5px; --cds-font-size-heading: 16px; --cds-font-size-title: 28px;
+    --cds-font-weight-medium: 600;
+    --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 14px; --cds-gap-lg: 22px; --cds-gap-xl: 32px;
+    --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 16px; --cds-pad-xl: 24px;
+    --cds-radius: 10px; --cds-dur-slow: .3s; --cds-ease-out: cubic-bezier(.2,.8,.2,1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-fg: #ece9e3; --color-fg-muted: #a39f97; --color-bg: #1b1a18; --color-panel: #252421;
+      --color-border-line: #3a3834; --color-ok: #4cc27c; --color-warn: #e0a84a; --color-bad: #f0695e;
+      --cds-text-secondary: #a39f97; --cds-surface-popover: #2d2c29; --cds-border: #3a3834;
+      --cds-chart-grid: #33312d; --cds-chart-axis: #55524c; --cds-chart-reference: #7a766e; --cds-chart-muted: #4a4741;
+    }
+  }
+  html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); }
+  body { font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-body); }
+  #dash-root { max-width: 1280px; margin: 0 auto; padding: 28px 16px 48px; }
+  .dash-skeleton { color: transparent !important; position: relative; }
+  .dash-skeleton::after { content: ""; position: absolute; inset: 20% 0; max-width: 6rem; border-radius: 6px; background: var(--color-border-line); }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="data/dados.js"></script>
+<script src="scripts/shim.js"></script>
+</head>
+<body>
+<div id="dash-root">
+<style>
+  .mx { font-family: var(--font-anthropic-sans); color: var(--color-fg); display: flex; flex-direction: column; gap: var(--cds-gap-lg); }
+  .mx-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-xs); }
+  .mx-stamp { margin: 0 0 var(--cds-gap-xs); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .mx-take { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); line-height: 1.5; max-width: 60rem; }
+  .mx-take b { color: var(--color-fg); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .mx-controls { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: end; }
+  .mx-controls label { display: flex; flex-direction: column; gap: 4px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .mx-controls input[type=date] { font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 5px 8px; }
+  .mx-controls select { font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 10px; min-width: 12rem; }
+  .mx-picked { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+  .mx-section-title { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .mx-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr)); gap: var(--cds-gap-md); }
+  .mx-kpi { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: 6px; min-height: 5.5rem; }
+  .mx-kpi .lb { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .mx-kpi .vl { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .mx-kpi .dl { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .mx-kpi .dl b { font-weight: 600; }
+  .mx-kpi .dl b.up { color: var(--color-ok); }
+  .mx-kpi .dl b.down { color: var(--color-bad); }
+  .mx-kpi .dl b.flat { color: var(--color-fg-muted); }
+  .mx-kpi.good { border-color: color-mix(in srgb, var(--color-ok) 45%, var(--color-border-line)); background: color-mix(in srgb, var(--color-ok) 7%, var(--color-panel)); }
+  .mx-kpi.bad { border-color: color-mix(in srgb, var(--color-bad) 45%, var(--color-border-line)); background: color-mix(in srgb, var(--color-bad) 7%, var(--color-panel)); }
+  .mx-roas-pos { color: var(--color-ok); }
+  .mx-roas-neg { color: var(--color-bad); }
+  .mx-compare { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); align-self: center; }
+  .mx-kpis.small .vl { font-size: var(--cds-font-size-heading); font-family: var(--font-anthropic-sans); font-weight: var(--cds-font-weight-medium); }
+  .mx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
+  .mx-grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--cds-gap-md); }
+  .mx-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+  .mx-card h3 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .mx-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0; line-height: 1.45; }
+  .mx-chart { position: relative; min-height: 220px; }
+  .mx-chart.mini { min-height: 140px; }
+  .mx-chart svg { display: block; }
+  .mx-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; z-index: 2; font-variant-numeric: tabular-nums; }
+  .mx-tip .d { color: var(--cds-text-secondary); }
+  .mx-fail { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: inherit; height: 100%; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .mx-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+  .mx-tablebox { max-height: 28rem; overflow: auto; }
+  .mx-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .mx-table th { position: sticky; top: 0; background: var(--color-panel); text-align: right; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); padding: 8px 10px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .mx-table td { text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .mx-table th:first-child, .mx-table td:first-child { text-align: left; }
+  .mx-table td.camp { text-align: left; white-space: normal; min-width: 12rem; }
+  .mx-table tbody tr[data-key] { cursor: pointer; }
+  .mx-table tbody tr:hover td { background: color-mix(in srgb, var(--color-fg) 5%, transparent); }
+  .mx-table tbody tr.on td { background: color-mix(in srgb, var(--color-fg) 9%, transparent); }
+  .mx-table td.zero { color: var(--color-fg-muted); }
+  @media (max-width: 720px) { .mx-table .opt { display: none; } }
+  .mx-tools { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+  .mx-tools input[type=search], .mx-tools select { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 10px; }
+  .mx-tools input[type=search] { flex: 1 1 14rem; min-width: 0; }
+  .mx-table th button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  .mx-table th button::after { content: ""; margin-left: 4px; }
+  .mx-table th[aria-sort=descending] button::after { content: "↓"; }
+  .mx-table th[aria-sort=ascending] button::after { content: "↑"; }
+  .mx-table td.st { color: var(--color-fg-muted); font-size: 0.92em; }
+  .mx-table td.st.on { color: var(--color-ok); }
+  .mx-table td.sub { color: var(--color-fg-muted); text-align: left; white-space: normal; min-width: 9rem; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  [data-dash-source-state=empty] { color: transparent; }
+</style>
+
+<div class="mx">
+  <header class="mx-head" id="topo">
+    <h1>Albuquerque Ads</h1>
+    <p class="mx-stamp">Dados do Meta Ads atualizados em <span class="mx-stamp-at">—</span></p>
+    <p class="mx-take"><span data-draw="periodo">—</span>, foram investidos <b data-draw="kpi" data-fmt="brl" data-source="resumo" data-field="investimento" data-where="conta=Todas">—</b>, que geraram <b data-draw="kpi" data-fmt="int" data-source="resumo" data-field="conversas" data-where="conta=Todas">—</b> conversas, <b data-draw="kpi" data-fmt="int" data-source="resumo" data-field="leads" data-where="conta=Todas">—</b> leads e <b data-draw="kpi" data-fmt="int" data-source="resumo" data-field="compras" data-where="conta=Todas">—</b> compras.</p>
+  </header>
+
+  <div class="mx-controls" id="filtros">
+    <label>Período
+      <select class="mx-period" aria-label="Período">
+        <option value="today">Hoje</option>
+        <option value="yesterday">Ontem</option>
+        <option value="last_3_days">Últimos 3 dias</option>
+        <option value="last_7_days">Últimos 7 dias</option>
+        <option value="last_14_days">Últimos 14 dias</option>
+        <option value="last_30_days">Últimos 30 dias</option>
+        <option value="this_month_inc">Este mês</option>
+        <option value="last_month">Mês passado</option>
+        <option value="custom">Personalizado</option>
+      </select>
+    </label>
+    <label class="mx-custom" hidden>De
+      <input type="date" class="mx-inicio" min="2015-01-01" max="2099-12-31" aria-label="Data inicial">
+    </label>
+    <label class="mx-custom" hidden>Até
+      <input type="date" class="mx-fim" min="2015-01-01" max="2099-12-31" aria-label="Data final">
+    </label>
+    <label>Conta
+      <select data-draw="contasel" data-source="resumo" aria-label="Conta"></select>
+    </label>
+    <button class="mx-picked" hidden>Ver todas as contas ×</button>
+    <button class="mx-picked mx-refresh">↻ Recarregar</button>
+    <span class="mx-compare">Comparando com <span data-draw="periodo_ant">—</span></span>
+  </div>
+
+  <section id="resultado">
+    <div class="mx-kpis">
+      <div class="mx-kpi"><span class="lb">Investimento</span><span class="vl" data-draw="kpi" data-fmt="brl" data-source="resumo" data-field="investimento" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="investimento" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">Conversas iniciadas</span><span class="vl" data-draw="kpi" data-fmt="int" data-source="resumo" data-field="conversas" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="conversas" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">Leads</span><span class="vl" data-draw="kpi" data-fmt="int" data-source="resumo" data-field="leads" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="leads" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">Compras</span><span class="vl" data-draw="kpi" data-fmt="int" data-source="resumo" data-field="compras" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="compras" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">Comissão (pixel)</span><span class="vl" data-draw="kpi" data-fmt="brl" data-source="resumo" data-field="valor_compras" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="valor_compras" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">Faturamento pelo ticket</span><span class="vl" data-draw="vendas" data-source="vendas" data-field="faturamento_ticket" data-where="conta=Todas">—</span><span class="dl"><span data-draw="ticketnota" data-source="vendas" data-field="ticket" data-where="conta=Todas">—</span></span></div>
+      <div class="mx-kpi"><span class="lb">ROAS</span><span class="vl" data-draw="kpi" data-fmt="x" data-source="resumo" data-field="roas" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="roas" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+    </div>
+  </section>
+
+  <section id="custos">
+    <div class="mx-kpis small">
+      <div class="mx-kpi"><span class="lb">Custo por conversa</span><span class="vl" data-draw="kpi" data-fmt="brl" data-source="resumo" data-field="custo_conversa" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="custo_conversa" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">Custo por lead</span><span class="vl" data-draw="kpi" data-fmt="brl" data-source="resumo" data-field="custo_lead" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="custo_lead" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">Custo por compra</span><span class="vl" data-draw="kpi" data-fmt="brl" data-source="resumo" data-field="custo_compra" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="custo_compra" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">CPM</span><span class="vl" data-draw="kpi" data-fmt="brl" data-source="resumo" data-field="cpm" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="cpm" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">CTR do link</span><span class="vl" data-draw="kpi" data-fmt="pct" data-source="resumo" data-field="ctr_link" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="ctr_link" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">CPC do link</span><span class="vl" data-draw="kpi" data-fmt="brl" data-source="resumo" data-field="cpc_link" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="cpc_link" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">Impressões</span><span class="vl" data-draw="kpi" data-fmt="int" data-source="resumo" data-field="impressoes" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="impressoes" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+      <div class="mx-kpi"><span class="lb">Cliques no link</span><span class="vl" data-draw="kpi" data-fmt="int" data-source="resumo" data-field="cliques" data-where="conta=Todas">—</span><span class="dl"><b data-draw="delta" data-source="variacao" data-field="cliques" data-where="conta=Todas">—</b> vs. período anterior</span></div>
+    </div>
+  </section>
+
+  <section class="mx-grid" id="tendencia">
+    <div class="mx-card" id="card-investimento">
+      <h3>Investimento por dia</h3>
+      <p class="mx-note">Valor gasto em R$, dia a dia, na conta escolhida.</p>
+      <div class="mx-chart" data-draw="bars" data-metric="investimento" data-fmt="brl" data-source="serie"></div>
+    </div>
+  </section>
+
+  <section class="mx-grid3" id="resultados-dia">
+    <div class="mx-card" id="card-conversas">
+      <h3>Conversas por dia</h3>
+      <p class="mx-note">Conversas iniciadas no WhatsApp, Messenger e Direct.</p>
+      <div class="mx-chart mini" data-draw="bars" data-metric="conversas" data-fmt="int" data-source="serie"></div>
+    </div>
+    <div class="mx-card" id="card-leads">
+      <h3>Leads por dia</h3>
+      <p class="mx-note">Formulário instantâneo do Meta + leads do pixel no site.</p>
+      <div class="mx-chart mini" data-draw="bars" data-metric="leads" data-fmt="int" data-source="serie"></div>
+    </div>
+    <div class="mx-card" id="card-compras">
+      <h3>Compras por dia</h3>
+      <p class="mx-note">Compras atribuídas aos anúncios (todas as origens).</p>
+      <div class="mx-chart mini" data-draw="bars" data-metric="compras" data-fmt="int" data-source="serie"></div>
+    </div>
+  </section>
+
+  <section class="mx-card" id="por-conta">
+    <h3>Desempenho por conta</h3>
+    <p class="mx-note">Clique numa conta para filtrar o dashboard inteiro. CPM, CTR, CPC e ROAS calculados a partir dos totais do período (alcance não disponível nesta versão).</p>
+    <div class="mx-tablebox">
+      <table class="mx-table mx-contas" data-source="por_conta" data-row-key="conta">
+        <thead><tr>
+          <th data-field="conta">Conta</th>
+          <th data-field="investimento">Investimento</th>
+          <th data-field="alcance" class="opt">Alcance</th>
+          <th data-field="impressoes" class="opt">Impressões</th>
+          <th data-field="cpm">CPM</th>
+          <th data-field="ctr_link" class="opt">CTR link</th>
+          <th data-field="cpc_link" class="opt">CPC link</th>
+          <th data-field="conversas">Conversas</th>
+          <th data-field="custo_conversa">Custo/conversa</th>
+          <th data-field="leads_meta" class="opt">Leads form.</th>
+          <th data-field="compras">Compras</th>
+          <th data-field="roas">ROAS</th>
+        </tr></thead>
+        <tbody data-draw="tbcontas"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mx-card" id="campanhas">
+    <h3>Campanhas</h3>
+    <p class="mx-note">Últimos 30 dias até <span class="mx-cj-fim">—</span> (não muda com o filtro de período). Da maior para a menor em investimento; clique numa campanha para ver só os conjuntos dela.</p>
+    <div class="mx-tablebox">
+      <table class="mx-table mx-camps" data-source="campanhas" data-row-key="conta,campanha">
+        <thead><tr>
+          <th data-field="campanha">Campanha</th>
+          <th data-field="conta" class="opt">Conta</th>
+          <th data-field="investimento">Investimento</th>
+          <th data-field="impressoes" class="opt">Impressões</th>
+          <th data-field="cliques" class="opt">Cliques</th>
+          <th data-field="conversas">Conversas</th>
+          <th data-field="leads_meta" class="opt">Leads form.</th>
+          <th data-field="compras">Compras</th>
+          <th data-field="valor_compras">Valor compras</th>
+        </tr></thead>
+        <tbody data-draw="tbcamps"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mx-card" id="conjuntos">
+    <h3>Conjuntos de anúncios</h3>
+    <p class="mx-note">Últimos 30 dias até <span class="mx-cj-fim">—</span> (não muda com o filtro de período). Alcance, CPM, CTR, CPC e custos por resultado calculados pelo Meta. Clique num título de coluna para ordenar.</p>
+    <div class="mx-tools">
+      <input type="search" class="mx-cj-busca" placeholder="Buscar conjunto ou campanha" aria-label="Buscar conjunto ou campanha">
+      <select class="mx-cj-status" aria-label="Status">
+        <option value="">Todos os status</option>
+        <option value="ACTIVE">Só ativos</option>
+        <option value="off">Só pausados</option>
+      </select>
+      <button class="mx-picked mx-camp-picked" hidden>Ver todas as campanhas ×</button>
+    </div>
+    <div class="mx-tablebox">
+      <table class="mx-table mx-cjs" data-source="conjuntos" data-row-key="conjunto_id">
+        <thead><tr>
+          <th data-field="conjunto"><button data-sort="conjunto">Conjunto</button></th>
+          <th data-field="campanha" class="opt"><button data-sort="campanha">Campanha</button></th>
+          <th data-field="conta" class="opt"><button data-sort="conta">Conta</button></th>
+          <th data-field="status"><button data-sort="status">Status</button></th>
+          <th data-field="investimento" aria-sort="descending"><button data-sort="investimento">Investimento</button></th>
+          <th data-field="alcance" class="opt"><button data-sort="alcance">Alcance</button></th>
+          <th data-field="cpm"><button data-sort="cpm">CPM</button></th>
+          <th data-field="ctr_link"><button data-sort="ctr_link">CTR link</button></th>
+          <th data-field="cpc_link" class="opt"><button data-sort="cpc_link">CPC link</button></th>
+          <th data-field="conversas"><button data-sort="conversas">Conversas</button></th>
+          <th data-field="custo_conversa"><button data-sort="custo_conversa">Custo/conversa</button></th>
+          <th data-field="leads_meta" class="opt"><button data-sort="leads_meta">Leads form.</button></th>
+          <th data-field="custo_lead" class="opt"><button data-sort="custo_lead">Custo/lead</button></th>
+          <th data-field="compras"><button data-sort="compras">Compras</button></th>
+          <th data-field="valor_compras" class="opt"><button data-sort="valor_compras">Valor compras</button></th>
+        </tr></thead>
+        <tbody data-draw="tbcjs"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <p class="mx-note" id="definicoes">Leads = leads de formulário instantâneo do Meta + leads do pixel no site. ROAS e comissão usam o valor de compra registrado pelo pixel (em coprodução, é a sua comissão); faturamento pelo ticket = compras × preço cheio, só nas contas com ticket cadastrado; o ROAS fica verde a partir de 1x (a venda pagou o anúncio) e vermelho abaixo disso. Custo por conversa, lead e compra = investimento dividido pelo resultado. Dados do Meta Ads via Supermetrics, no fuso de Fortaleza.</p>
+</div>
+
+<script>
+{
+
+  const brl = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'});
+  const brl0 = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', maximumFractionDigits: 0});
+  const int = new Intl.NumberFormat('pt-BR', {maximumFractionDigits: 0});
+  const pct = new Intl.NumberFormat('pt-BR', {style: 'percent', minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const num2 = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const isNum = (v) => v !== null && v !== undefined && v !== '' && isFinite(Number(v));
+  window.mx = {
+    fmt(v, kind) {
+      if (!isNum(v)) return '—';
+      const n = Number(v);
+      if (kind === 'brl') return brl.format(n);
+      if (kind === 'brl0') return brl0.format(n);
+      if (kind === 'pct') return pct.format(n);
+      if (kind === 'x') return num2.format(n) + 'x';
+      return int.format(n);
+    },
+    conta() { return dash.params().conta || 'Todas'; },
+    enc(s) { return encodeURIComponent(String(s)); },
+    periodos: {
+      today: 'Hoje',
+      yesterday: 'Ontem',
+      last_3_days: 'Nos últimos 3 dias',
+      last_7_days: 'Nos últimos 7 dias',
+      last_14_days: 'Nos últimos 14 dias',
+      last_30_days: 'Nos últimos 30 dias',
+      last_90_days: 'Nos últimos 90 dias',
+      this_month_inc: 'Neste mês',
+      last_month: 'No mês passado',
+    },
+  };
+
+}
+</script>
+
+<script>
+{
+
+  const NAMES_LOADER = 'Resposta da Supermetrics como tabela: espera a consulta terminar e dá nomes curtos às colunas.';
+  const loaderFn = async ({answer, call}) => {
+    const NAMES = {
+      Date: 'data', profile: 'conta', currency: 'moeda', adcampaign_name: 'campanha',
+      cost: 'investimento', impressions: 'impressoes', reach: 'alcance', action_link_click: 'cliques',
+      new_messaging_conversations_7d: 'conversas', 'onsite_conversion.lead_grouped': 'leads_meta',
+      offsite_conversions_fb_pixel_lead: 'leads_site', action_omni_purchase: 'compras',
+      offsite_conversion_value_fb_pixel_purchase: 'valor_compras', CPM: 'cpm', link_CTR: 'ctr_link',
+      CPLC: 'cpc_link', cost_per_messaging_conversation_started: 'custo_conversa', ROAS: 'roas',
+      adset_id: 'conjunto_id', adset_name: 'conjunto', adsetstatus: 'status', cost_per_on_facebook_lead: 'custo_lead',
+    };
+    const parse = (x) => (typeof x === 'string' ? JSON.parse(x) : x);
+    let a = parse(answer);
+    for (let i = 0; i < 40; i++) {
+      if (!a || a.success === false) throw new Error((a && a.error && (a.error.message || a.error)) || 'A Supermetrics não respondeu.');
+      const d = a.data;
+      if (d && d.success === false) throw new Error(d.message || d.error || 'A consulta falhou.');
+      if (d && Array.isArray(d.data)) {
+        const ids = d.requested_field_ids || [];
+        const columns = ids.map((id) => NAMES[id] || id);
+        const rows = d.data.slice(1).map((cells) => Object.fromEntries(columns.map((c, j) => [c, cells[j] === undefined ? null : cells[j]])));
+        return {columns, rows};
+      }
+      if (d && d.schedule_id) {
+        a = parse(await call('get_async_query_results', {schedule_id: d.schedule_id}));
+        continue;
+      }
+      throw new Error('Resposta inesperada: ' + Object.keys(a).join(', '));
+    }
+    throw new Error('A consulta ainda estava rodando depois de várias esperas.');
+  };
+  dash.loader('diario', {description: NAMES_LOADER, fn: loaderFn});
+  dash.loader('por_conta', {description: NAMES_LOADER, fn: loaderFn});
+  dash.loader('campanhas', {description: NAMES_LOADER, fn: loaderFn});
+  dash.loader('conjuntos', {description: NAMES_LOADER, fn: loaderFn});
+  dash.loader('anterior', {description: NAMES_LOADER, fn: loaderFn});
+
+}
+</script>
+
+<script>
+{
+
+  dash.calc('resumo', {
+    title: 'Totais por conta',
+    description: 'Soma do período por conta e no total ("Todas"), com custos e taxas calculados a partir dos totais.',
+    inputs: ['diario'],
+    fn: (diario) => {
+      const sums = ['investimento', 'impressoes', 'cliques', 'conversas', 'leads_meta', 'leads_site', 'compras', 'valor_compras'];
+      const by = new Map();
+      const add = (conta, r) => {
+        if (!by.has(conta)) by.set(conta, Object.fromEntries([['conta', conta], ...sums.map((k) => [k, 0])]));
+        const t = by.get(conta);
+        for (const k of sums) t[k] += Number(r[k]) || 0;
+      };
+      add('Todas', {});
+      for (const r of diario) {
+        if (!r.data) continue;
+        add(r.conta, r);
+        add('Todas', r);
+      }
+      const div = (a, b) => (b > 0 ? a / b : null);
+      return [...by.values()].map((t) => {
+        const leads = t.leads_meta + t.leads_site;
+        return {
+          ...t,
+          leads,
+          custo_conversa: div(t.investimento, t.conversas),
+          custo_lead: div(t.investimento, leads),
+          custo_compra: div(t.investimento, t.compras),
+          cpm: div(t.investimento * 1000, t.impressoes),
+          ctr_link: div(t.cliques, t.impressoes),
+          cpc_link: div(t.investimento, t.cliques),
+          roas: t.valor_compras > 0 ? t.valor_compras / t.investimento : null,
+        };
+      });
+    },
+  });
+
+  dash.calc('resumo_anterior', {
+    title: 'Totais do período anterior',
+    description: 'Os mesmos totais e custos de "Totais por conta", no período anterior de mesmo tamanho.',
+    inputs: ['anterior'],
+    fn: (anterior) => {
+      const sums = ['investimento', 'impressoes', 'cliques', 'conversas', 'leads_meta', 'leads_site', 'compras', 'valor_compras'];
+      const by = new Map();
+      const add = (conta, r) => {
+        if (!by.has(conta)) by.set(conta, Object.fromEntries([['conta', conta], ...sums.map((k) => [k, 0])]));
+        const t = by.get(conta);
+        for (const k of sums) t[k] += Number(r[k]) || 0;
+      };
+      add('Todas', {});
+      for (const r of anterior) {
+        if (r.investimento === null || r.investimento === undefined) continue;
+        add(r.conta, r);
+        add('Todas', r);
+      }
+      const div = (a, b) => (b > 0 ? a / b : null);
+      return [...by.values()].map((t) => {
+        const leads = t.leads_meta + t.leads_site;
+        return {
+          ...t,
+          leads,
+          custo_conversa: div(t.investimento, t.conversas),
+          custo_lead: div(t.investimento, leads),
+          custo_compra: div(t.investimento, t.compras),
+          cpm: div(t.investimento * 1000, t.impressoes),
+          ctr_link: div(t.cliques, t.impressoes),
+          cpc_link: div(t.investimento, t.cliques),
+          roas: t.valor_compras > 0 ? t.valor_compras / t.investimento : null,
+        };
+      });
+    },
+  });
+
+  dash.calc('variacao', {
+    title: 'Variação vs. período anterior',
+    description: 'Mudança percentual de cada métrica entre o período escolhido e o anterior, por conta (vazio quando o anterior é zero).',
+    inputs: ['resumo', 'resumo_anterior'],
+    fn: (resumo, resumo_anterior) => {
+      const campos = ['investimento', 'impressoes', 'cliques', 'conversas', 'leads', 'compras', 'valor_compras', 'custo_conversa', 'custo_lead', 'custo_compra', 'cpm', 'ctr_link', 'cpc_link', 'roas'];
+      const prev = new Map(resumo_anterior.map((r) => [r.conta, r]));
+      return resumo.map((r) => {
+        const a = prev.get(r.conta) || {};
+        const out = {conta: r.conta};
+        for (const k of campos) {
+          const cur = r[k];
+          const old = a[k];
+          out[k] = cur !== null && cur !== undefined && old !== null && old !== undefined && old > 0 ? (cur - old) / old : null;
+        }
+        return out;
+      });
+    },
+  });
+
+  dash.calc('vendas', {
+    title: 'Faturamento pelo ticket',
+    description: 'Compras × preço cheio do produto, nas contas com ticket conhecido (Murilo Anúncios: R$ 197). "Todas" soma só essas contas.',
+    inputs: ['resumo'],
+    fn: (resumo) => {
+      const TICKETS = {'Murilo Anúncios': 197};
+      const linhas = resumo.filter((r) => r.conta !== 'Todas').map((r) => {
+        const ticket = TICKETS[r.conta] ?? null;
+        return {conta: r.conta, ticket, compras: r.compras, faturamento_ticket: ticket === null ? null : r.compras * ticket};
+      });
+      const com = linhas.filter((r) => r.ticket !== null);
+      const total = com.length ? com.reduce((s, r) => s + r.faturamento_ticket, 0) : null;
+      return [...linhas, {conta: 'Todas', ticket: null, compras: com.reduce((s, r) => s + r.compras, 0), faturamento_ticket: total}];
+    },
+  });
+
+  dash.calc('serie', {
+    title: 'Resultados por dia',
+    description: 'Investimento, conversas, leads e compras de cada dia, por conta e no total ("Todas").',
+    inputs: ['diario'],
+    fn: (diario) => {
+      const sums = ['investimento', 'conversas', 'leads', 'compras'];
+      const by = new Map();
+      const add = (data, conta, r) => {
+        const k = data + '|' + conta;
+        if (!by.has(k)) by.set(k, Object.fromEntries([['data', data], ['conta', conta], ...sums.map((s) => [s, 0])]));
+        const t = by.get(k);
+        t.investimento += Number(r.investimento) || 0;
+        t.conversas += Number(r.conversas) || 0;
+        t.leads += (Number(r.leads_meta) || 0) + (Number(r.leads_site) || 0);
+        t.compras += Number(r.compras) || 0;
+      };
+      for (const r of diario) {
+        if (!r.data) continue;
+        add(r.data, r.conta, r);
+        add(r.data, 'Todas', r);
+      }
+      return [...by.values()].sort((a, b) => (a.data < b.data ? -1 : a.data > b.data ? 1 : 0));
+    },
+  });
+
+}
+</script>
+
+<script>
+{
+
+  // Period control (static options) and the clear-account button
+  const hoje = (window.MX_META && window.MX_META.hoje) || new Date().toLocaleDateString('en-CA', {timeZone: 'America/Fortaleza'});
+  const toD = (s) => new Date(s + 'T00:00:00Z');
+  const toS = (d) => d.toISOString().slice(0, 10);
+  const addDays = (s, n) => toS(new Date(toD(s).getTime() + n * 86400000));
+  const diffDays = (a, b) => Math.round((toD(b) - toD(a)) / 86400000);
+  const monthStart = (s, back) => { const d = toD(s); return toS(new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() - back, 1))); };
+  const monthEnd = (s, back) => { const d = toD(s); return toS(new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() - back + 1, 0))); };
+  const ontem = addDays(hoje, -1);
+  const trintaAtras = addDays(hoje, -30);
+  const faixa = (p) => {
+    const m = /^last_(\d+)_days$/.exec(p.periodo || 'last_30_days');
+    if (m) return [addDays(ontem, -(Number(m[1]) - 1)), ontem];
+    if (p.periodo === 'today') return [hoje, hoje];
+    if (p.periodo === 'yesterday') return [ontem, ontem];
+    if (p.periodo === 'this_month_inc') return [monthStart(hoje, 0), hoje];
+    if (p.periodo === 'last_month') return [monthStart(hoje, 1), monthEnd(hoje, 1)];
+    return [p.inicio || trintaAtras, p.fim || ontem];
+  };
+  const anterior = (p) => {
+    const [s, e] = faixa(p);
+    if (p.periodo === 'this_month_inc') {
+      const ps = monthStart(hoje, 1);
+      const pe = addDays(ps, diffDays(s, e));
+      const lim = monthEnd(hoje, 1);
+      return [ps, pe > lim ? lim : pe];
+    }
+    if (p.periodo === 'last_month') return [monthStart(hoje, 2), monthEnd(hoje, 2)];
+    const pe = addDays(s, -1);
+    return [addDays(pe, -diffDays(s, e)), pe];
+  };
+  const aplicar = (changes) => {
+    const p = {...dash.params(), ...changes};
+    const [ps, pe] = anterior(p);
+    dash.setParams({...changes, ant_inicio: ps, ant_fim: pe});
+  };
+  window.mx.anterior = anterior;
+  window.mx.faixa = faixa;
+  aplicar({inicio: trintaAtras, fim: ontem});
+  const okDate = (v) => /^20[0-9]{2}-[01][0-9]-[0-3][0-9]$/.test(v) && v <= hoje;
+  document.querySelectorAll('.mx-period').forEach((sel) => {
+    sel.addEventListener('change', () => aplicar({periodo: sel.value}));
+  });
+  document.querySelectorAll('.mx-inicio').forEach((i) => {
+    i.addEventListener('change', () => {
+      if (!i.value || !i.validity.valid || !okDate(i.value)) return;
+      const fim = dash.params().fim;
+      aplicar(fim && i.value > fim ? {inicio: i.value, fim: i.value} : {inicio: i.value});
+    });
+    i.addEventListener('blur', () => { i.value = dash.params().inicio || ''; });
+  });
+  document.querySelectorAll('.mx-fim').forEach((i) => {
+    i.addEventListener('change', () => {
+      if (!i.value || !i.validity.valid || !okDate(i.value)) return;
+      const ini = dash.params().inicio;
+      aplicar(ini && i.value < ini ? {inicio: i.value, fim: i.value} : {fim: i.value});
+    });
+    i.addEventListener('blur', () => { i.value = dash.params().fim || ''; });
+  });
+  document.querySelectorAll('.mx-picked:not(.mx-refresh):not(.mx-camp-picked)').forEach((b) => {
+    b.addEventListener('click', () => dash.setParams({conta: null}));
+  });
+  document.querySelectorAll('.mx-refresh').forEach((b) => {
+    b.addEventListener('click', () => location.reload());
+  });
+  document.querySelectorAll('.mx-contas').forEach((t) => {
+    t.addEventListener('click', (event) => {
+      const row = event.target.closest('tr[data-conta]');
+      if (row) dash.setParams({conta: row.dataset.conta, campanha: null});
+    });
+  });
+  document.querySelectorAll('.mx-camps').forEach((t) => {
+    t.addEventListener('click', (event) => {
+      const row = event.target.closest('tr[data-conta]');
+      if (!row) return;
+      dash.setParams({conta: row.dataset.conta, campanha: row.dataset.campanha});
+      document.querySelectorAll('#conjuntos').forEach((s) => s.scrollIntoView({behavior: 'smooth', block: 'start'}));
+    });
+  });
+  document.querySelectorAll('.mx-camp-picked').forEach((b) => {
+    b.addEventListener('click', () => dash.setParams({campanha: null}));
+  });
+  document.querySelectorAll('.mx-cj-busca').forEach((i) => {
+    i.addEventListener('input', () => dash.setParams({cj_busca: i.value || null}));
+  });
+  document.querySelectorAll('.mx-cj-status').forEach((s) => {
+    s.addEventListener('change', () => dash.setParams({cj_status: s.value || null}));
+  });
+  document.querySelectorAll('.mx-cjs [data-sort]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const p = dash.params();
+      const col = b.dataset.sort;
+      const textCol = ['conjunto', 'campanha', 'conta', 'status'].includes(col);
+      const dir = p.cj_ordem === col ? (p.cj_dir === 'asc' ? 'desc' : 'asc') : (textCol ? 'asc' : 'desc');
+      dash.setParams({cj_ordem: col, cj_dir: dir});
+    });
+  });
+  dash.onData(() => {
+    const p = dash.params();
+    document.querySelectorAll('.mx-period').forEach((sel) => { sel.value = p.periodo || 'last_30_days'; });
+    document.querySelectorAll('.mx-custom').forEach((l) => { l.hidden = p.periodo !== 'custom'; });
+    document.querySelectorAll('.mx-inicio').forEach((i) => { if (i !== document.activeElement) i.value = p.inicio || ''; });
+    document.querySelectorAll('.mx-fim').forEach((i) => { if (i !== document.activeElement) i.value = p.fim || ''; });
+    document.querySelectorAll('.mx-picked:not(.mx-camp-picked):not(.mx-refresh)').forEach((b) => { b.hidden = !p.conta || p.conta === 'Todas'; });
+    document.querySelectorAll('.mx-camp-picked').forEach((b) => { b.hidden = !p.campanha; });
+    document.querySelectorAll('.mx-cj-status').forEach((s) => { s.value = p.cj_status || ''; });
+    document.querySelectorAll('.mx-cj-busca').forEach((i) => { if (i !== document.activeElement) i.value = p.cj_busca || ''; });
+    const ordem = p.cj_ordem || 'investimento';
+    const dir = p.cj_dir || 'desc';
+    document.querySelectorAll('.mx-cjs th').forEach((th) => {
+      const b = th.querySelector('[data-sort]');
+      if (b && b.dataset.sort === ordem) th.setAttribute('aria-sort', dir === 'asc' ? 'ascending' : 'descending');
+      else th.removeAttribute('aria-sort');
+    });
+  });
+
+}
+</script>
+
+<script>
+{
+
+  dash.draw('periodo', (el) => {
+    const p = dash.params();
+    if (p.periodo === 'custom' && p.inicio && p.fim) {
+      const br = (s) => s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4);
+      el.textContent = p.inicio === p.fim ? 'Em ' + br(p.inicio) : 'De ' + br(p.inicio) + ' a ' + br(p.fim);
+      return;
+    }
+    el.textContent = window.mx.periodos[p.periodo] || window.mx.periodos.last_30_days;
+  });
+
+  dash.draw('contasel', (sel) => {
+    const g = dash.data('resumo');
+    const rows = g.status === 'ok' ? g.data.filter((r) => r.conta !== 'Todas').sort((a, b) => b.investimento - a.investimento) : [];
+    sel.replaceChildren(new Option('Todas as contas', ''), ...rows.map((r) => new Option(r.conta, r.conta)));
+    const c = window.mx.conta();
+    sel.value = c === 'Todas' ? '' : c;
+    sel.onchange = () => dash.setParams({conta: sel.value || null, campanha: null});
+  });
+
+  const ROAS_EQUILIBRIO = 1;
+  const MENOR_MELHOR = ['custo_conversa', 'custo_lead', 'custo_compra', 'cpm', 'cpc_link'];
+  const NEUTRO = ['investimento'];
+  const pctFmt = new Intl.NumberFormat('pt-BR', {style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1});
+
+  dash.draw('periodo_ant', (el) => {
+    const [s, e] = window.mx.anterior(dash.params());
+    const br = (x) => x.slice(8, 10) + '/' + x.slice(5, 7) + '/' + x.slice(0, 4);
+    el.textContent = s === e ? br(s) : br(s) + ' a ' + br(e);
+  });
+
+  dash.draw('delta', (el) => {
+    const g = dash.data('variacao');
+    const c = window.mx.conta();
+    const k = el.dataset.field;
+    el.setAttribute('data-where', 'conta=' + window.mx.enc(c));
+    el.classList.remove('up', 'down', 'flat');
+    const card = el.closest('.mx-kpi');
+    if (card) card.classList.remove('good', 'bad');
+    if (g.status !== 'ok') { el.textContent = '—'; return; }
+    const row = g.data.find((r) => r.conta === c);
+    const v = row ? row[k] : null;
+    if (v === null || v === undefined || !isFinite(v)) { el.textContent = '—'; return; }
+    const seta = v > 0.0005 ? '▲ ' : v < -0.0005 ? '▼ ' : '';
+    el.textContent = seta + pctFmt.format(Math.abs(v));
+    if (Math.abs(v) < 0.0005 || NEUTRO.includes(k)) { el.classList.add('flat'); return; }
+    const melhor = MENOR_MELHOR.includes(k) ? v < 0 : v > 0;
+    el.classList.add(melhor ? 'up' : 'down');
+    if (card) card.classList.add(melhor ? 'good' : 'bad');
+  });
+
+  dash.draw('vendas', (el) => {
+    const g = dash.data('vendas');
+    const c = window.mx.conta();
+    el.setAttribute('data-where', 'conta=' + window.mx.enc(c));
+    el.classList.toggle('dash-skeleton', g.status === 'loading');
+    if (g.status !== 'ok') { el.textContent = '—'; return; }
+    const row = g.data.find((r) => r.conta === c);
+    el.textContent = row ? window.mx.fmt(row.faturamento_ticket, 'brl') : '—';
+  });
+
+  dash.draw('ticketnota', (el) => {
+    const g = dash.data('vendas');
+    const c = window.mx.conta();
+    el.setAttribute('data-where', 'conta=' + window.mx.enc(c));
+    if (g.status !== 'ok') { el.textContent = '—'; return; }
+    const row = g.data.find((r) => r.conta === c);
+    if (row && row.ticket) el.textContent = window.mx.fmt(row.compras, 'int') + ' vendas × ' + window.mx.fmt(row.ticket, 'brl');
+    else if (c === 'Todas') el.textContent = 'Só contas com ticket cadastrado';
+    else el.textContent = 'Ticket não cadastrado';
+  });
+
+  dash.draw('kpi', (el) => {
+    const g = dash.data('resumo');
+    const c = window.mx.conta();
+    el.setAttribute('data-where', 'conta=' + window.mx.enc(c));
+    el.classList.toggle('dash-skeleton', g.status === 'loading');
+    if (g.status !== 'ok') { el.textContent = '—'; return; }
+    const row = g.data.find((r) => r.conta === c);
+    el.textContent = row ? window.mx.fmt(row[el.dataset.field], el.dataset.fmt) : '—';
+    if (el.dataset.field === 'roas') {
+      const v = row ? Number(row.roas) : NaN;
+      el.classList.toggle('mx-roas-pos', isFinite(v) && row.roas !== null && v >= ROAS_EQUILIBRIO);
+      el.classList.toggle('mx-roas-neg', isFinite(v) && row.roas !== null && v < ROAS_EQUILIBRIO);
+    }
+  });
+
+}
+</script>
+
+<script>
+{
+
+  dash.draw('bars', (el) => {
+    const g = dash.data('serie');
+    el.classList.toggle('dash-skeleton', g.status === 'loading');
+    if (g.status !== 'ok') {
+      el.replaceChildren();
+      if (g.status === 'error') {
+        const f = document.createElement('div');
+        f.className = 'mx-fail';
+        f.textContent = 'Falha ao carregar';
+        el.append(f);
+      } else {
+        el.textContent = '—';
+      }
+      return;
+    }
+    const metric = el.dataset.metric;
+    const kind = el.dataset.fmt;
+    const c = window.mx.conta();
+    const days = [...new Set(g.data.filter((r) => r.conta === 'Todas').map((r) => r.data))];
+    const byDay = new Map(g.data.filter((r) => r.conta === c).map((r) => [r.data, r]));
+    const pts = days.map((d) => ({data: d, v: byDay.has(d) ? byDay.get(d)[metric] : 0, at: new Date(d + 'T12:00:00Z')}));
+    el.replaceChildren();
+    const W = Math.max(240, el.clientWidth || 600);
+    const H = el.classList.contains('mini') ? 140 : 220;
+    const max = d3.max(pts, (p) => p.v) || 0;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const y = d3.scaleLinear([0, max || 1], [H - 22, 8]).nice();
+    const yTicks = y.ticks(el.classList.contains('mini') ? 3 : 4);
+    const tickFmt = (v) => (kind === 'brl' ? window.mx.fmt(v, 'brl0') : window.mx.fmt(v, 'int'));
+    const probe = svg.append('text').attr('font-size', 11).style('font-family', 'var(--font-anthropic-sans)');
+    let left = 0;
+    for (const t of yTicks) { probe.text(tickFmt(t)); left = Math.max(left, probe.node().getComputedTextLength()); }
+    probe.remove();
+    left = Math.ceil(left) + 8;
+    const x = d3.scaleBand(pts.map((p) => p.data), [left, W - 4]).paddingInner(0.25).paddingOuter(0.1);
+    const grid = svg.append('g');
+    for (const t of yTicks) {
+      grid.append('line').attr('x1', left).attr('x2', W - 4).attr('y1', y(t)).attr('y2', y(t)).attr('stroke', 'var(--cds-chart-grid)').attr('stroke-width', 1);
+      grid.append('text').attr('x', left - 6).attr('y', y(t)).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', 11).style('font-family', 'var(--font-anthropic-sans)').attr('fill', 'var(--color-fg-muted)').text(tickFmt(t));
+    }
+    const bw = Math.min(32, x.bandwidth());
+    const off = (x.bandwidth() - bw) / 2;
+    const color = dash.colors[0];
+    const bars = svg.append('g').selectAll('rect').data(pts).join('rect')
+      .attr('x', (p) => x(p.data) + off).attr('width', bw)
+      .attr('y', (p) => y(p.v)).attr('height', (p) => Math.max(0, y(0) - y(p.v)))
+      .attr('rx', Math.min(3, bw / 2)).attr('fill', color);
+    svg.append('line').attr('x1', left).attr('x2', W - 4).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', 'var(--cds-chart-axis)');
+    const fmtD = d3.utcFormat('%d/%m');
+    const nLab = Math.max(2, Math.floor((W - left) / 70));
+    const step = Math.max(1, Math.ceil(pts.length / nLab));
+    svg.append('g').selectAll('text').data(pts.filter((p, i) => i % step === 0)).join('text')
+      .attr('x', (p) => x(p.data) + x.bandwidth() / 2).attr('y', H - 6).attr('text-anchor', 'middle')
+      .attr('font-size', 11).style('font-family', 'var(--font-anthropic-sans)').attr('fill', 'var(--color-fg-muted)')
+      .text((p) => fmtD(p.at));
+    const tip = document.createElement('div');
+    tip.className = 'mx-tip';
+    tip.hidden = true;
+    el.append(tip);
+    svg.append('g').selectAll('rect').data(pts).join('rect')
+      .attr('x', (p) => x(p.data)).attr('width', x.bandwidth()).attr('y', 0).attr('height', H - 22)
+      .attr('fill', 'transparent')
+      .on('mouseenter', (event, p) => {
+        bars.attr('opacity', (q) => (q === p ? 1 : 0.45));
+        tip.replaceChildren();
+        const dd = document.createElement('div'); dd.className = 'd'; dd.textContent = d3.utcFormat('%d/%m/%Y')(p.at);
+        const vv = document.createElement('div'); vv.textContent = window.mx.fmt(p.v, kind);
+        tip.append(dd, vv);
+        tip.hidden = false;
+        const bx = x(p.data) + x.bandwidth() / 2;
+        const scale = el.clientWidth / W;
+        const tw = tip.offsetWidth;
+        tip.style.left = Math.max(0, Math.min(el.clientWidth - tw, bx * scale - tw / 2)) + 'px';
+        tip.style.top = Math.max(0, y(p.v) * scale - 44) + 'px';
+      })
+      .on('mouseleave', () => { bars.attr('opacity', 1); tip.hidden = true; });
+  });
+
+}
+</script>
+
+<script>
+{
+
+  const cell = (text, cls) => {
+    const td = document.createElement('td');
+    td.textContent = text;
+    if (cls) td.className = cls;
+    return td;
+  };
+
+  dash.draw('tbcontas', (tb) => {
+    const g = dash.data('por_conta');
+    tb.replaceChildren();
+    if (g.status !== 'ok') return;
+    const c = window.mx.conta();
+    const f = window.mx.fmt;
+    const rows = [...g.data].sort((a, b) => (Number(b.investimento) || 0) - (Number(a.investimento) || 0));
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = r.conta;
+      tr.dataset.conta = r.conta;
+      if (r.conta === c) tr.className = 'on';
+      const idle = !isFinite(Number(r.investimento)) || !Number(r.investimento);
+      tr.append(
+        cell(r.conta),
+        cell(f(r.investimento, 'brl'), idle ? 'zero' : ''),
+        cell(f(r.alcance, 'int'), 'opt'),
+        cell(f(r.impressoes, 'int'), 'opt'),
+        cell(f(r.cpm, 'brl')),
+        cell(f(r.ctr_link, 'pct'), 'opt'),
+        cell(f(r.cpc_link, 'brl'), 'opt'),
+        cell(f(r.conversas, 'int')),
+        cell(f(r.custo_conversa, 'brl')),
+        cell(f(r.leads_meta, 'int'), 'opt'),
+        cell(f(r.compras, 'int')),
+        cell(Number(r.roas) > 0 ? f(r.roas, 'x') : '—', Number(r.roas) > 0 ? (Number(r.roas) >= 1 ? 'mx-roas-pos' : 'mx-roas-neg') : ''),
+      );
+      tb.append(tr);
+    }
+  });
+
+  dash.draw('tbcamps', (tb) => {
+    const g = dash.data('campanhas');
+    tb.replaceChildren();
+    if (g.status !== 'ok') return;
+    const c = window.mx.conta();
+    const f = window.mx.fmt;
+    const enc = window.mx.enc;
+    const rows = g.data
+      .filter((r) => r.campanha && Number(r.investimento) > 0 && (c === 'Todas' || r.conta === c))
+      .sort((a, b) => Number(b.investimento) - Number(a.investimento));
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = enc(r.conta) + ',' + enc(r.campanha);
+      tr.dataset.conta = r.conta;
+      tr.dataset.campanha = r.campanha;
+      if (r.campanha === dash.params().campanha) tr.className = 'on';
+      tr.append(
+        cell(r.campanha, 'camp'),
+        cell(r.conta, 'opt'),
+        cell(f(r.investimento, 'brl')),
+        cell(f(r.impressoes, 'int'), 'opt'),
+        cell(f(r.cliques, 'int'), 'opt'),
+        cell(f(r.conversas, 'int')),
+        cell(f(r.leads_meta, 'int'), 'opt'),
+        cell(f(r.compras, 'int')),
+        cell(f(r.valor_compras, 'brl')),
+      );
+      tb.append(tr);
+    }
+  });
+
+}
+</script>
+
+<script>
+{
+
+  const cell = (text, cls) => {
+    const td = document.createElement('td');
+    td.textContent = text;
+    if (cls) td.className = cls;
+    return td;
+  };
+
+  dash.draw('tbcjs', (tb) => {
+    const g = dash.data('conjuntos');
+    tb.replaceChildren();
+    if (g.status !== 'ok') return;
+    const p = dash.params();
+    const c = window.mx.conta();
+    const f = window.mx.fmt;
+    const q = (p.cj_busca || '').toLowerCase().trim();
+    const st = p.cj_status || '';
+    const ordem = p.cj_ordem || 'investimento';
+    const asc = (p.cj_dir || 'desc') === 'asc';
+    const textCol = ['conjunto', 'campanha', 'conta', 'status'].includes(ordem);
+    const rows = g.data
+      .filter((r) => r.conjunto_id && Number(r.investimento) > 0)
+      .filter((r) => c === 'Todas' || r.conta === c)
+      .filter((r) => !p.campanha || r.campanha === p.campanha)
+      .filter((r) => !st || (st === 'ACTIVE' ? r.status === 'ACTIVE' : r.status !== 'ACTIVE'))
+      .filter((r) => !q || (String(r.conjunto) + ' ' + String(r.campanha)).toLowerCase().includes(q))
+      .sort((a, b) => {
+        let x;
+        if (textCol) x = String(a[ordem] || '').localeCompare(String(b[ordem] || ''), 'pt-BR');
+        else {
+          const va = Number(a[ordem]); const vb = Number(b[ordem]);
+          const na = a[ordem] === null || !isFinite(va); const nb = b[ordem] === null || !isFinite(vb);
+          if (na || nb) return na === nb ? 0 : na ? 1 : -1;
+          x = va - vb;
+        }
+        return asc ? x : -x;
+      });
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = r.conjunto_id;
+      tr.append(
+        cell(r.conjunto, 'camp'),
+        cell(r.campanha, 'sub opt'),
+        cell(r.conta, 'opt'),
+        cell(r.status, r.status === 'ACTIVE' ? 'st on' : 'st'),
+        cell(f(r.investimento, 'brl')),
+        cell(f(r.alcance, 'int'), 'opt'),
+        cell(f(r.cpm, 'brl')),
+        cell(f(r.ctr_link, 'pct')),
+        cell(f(r.cpc_link, 'brl'), 'opt'),
+        cell(f(r.conversas, 'int')),
+        cell(f(r.custo_conversa, 'brl')),
+        cell(f(r.leads_meta, 'int'), 'opt'),
+        cell(f(r.custo_lead, 'brl'), 'opt'),
+        cell(f(r.compras, 'int')),
+        cell(f(r.valor_compras, 'brl'), 'opt'),
+      );
+      tb.append(tr);
+    }
+  });
+
+}
+</script>
+
+<script>
+{
+
+  (function () {
+    const m = window.MX_META || {};
+    const br = (x) => x.slice(8, 10) + '/' + x.slice(5, 7) + '/' + x.slice(0, 4);
+    const at = m.atualizado ? br(m.atualizado.slice(0, 10)) + ' às ' + m.atualizado.slice(11, 16) : '—';
+    document.querySelectorAll('.mx-stamp-at').forEach((el) => { el.textContent = at; });
+    document.querySelectorAll('.mx-cj-fim').forEach((el) => { el.textContent = m.conjuntos ? br(m.conjuntos.fim) : '—'; });
+    document.querySelectorAll('.mx-inicio, .mx-fim').forEach((i) => { if (m.primeiro_dia) i.min = m.primeiro_dia; if (m.hoje) i.max = m.hoje; });
+  })();
+
+}
+</script>
+
+</div>
+</body>
+</html>
