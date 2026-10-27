@@ -193,7 +193,7 @@
 
   <section class="mx-card" id="por-conta">
     <h3>Desempenho por conta</h3>
-    <p class="mx-note">Clique numa conta para filtrar o dashboard inteiro. CPM, CTR, CPC e ROAS calculados a partir dos totais do período (alcance não disponível nesta versão).</p>
+    <p class="mx-note">Clique numa conta para filtrar o dashboard inteiro. CPM, CTR e CPC calculados a partir dos totais do período (alcance não disponível nesta versão). ROAS = faturamento ÷ investimento.</p>
     <div class="mx-tablebox">
       <table class="mx-table mx-contas" data-source="por_conta" data-row-key="conta">
         <thead><tr>
@@ -208,7 +208,7 @@
           <th data-field="custo_conversa">Custo/conversa</th>
           <th data-field="leads_meta" class="opt">Leads form.</th>
           <th data-field="compras">Compras</th>
-          <th data-field="roas">ROAS</th>
+          <th data-field="roas" data-source="resumo">ROAS</th>
         </tr></thead>
         <tbody data-draw="tbcontas"></tbody>
       </table>
@@ -272,7 +272,7 @@
     </div>
   </section>
 
-  <p class="mx-note" id="definicoes">Leads = leads de formulário instantâneo do Meta + leads do pixel no site. ROAS e comissão usam o valor de compra registrado pelo pixel (em coprodução, é a sua comissão); faturamento pelo ticket = compras × preço cheio, só nas contas com ticket cadastrado; o ROAS fica verde a partir de 1x (a venda pagou o anúncio) e vermelho abaixo disso. Custo por conversa, lead e compra = investimento dividido pelo resultado. Dados do Meta Ads via Supermetrics, no fuso de Fortaleza.</p>
+  <p class="mx-note" id="definicoes">Leads = leads de formulário instantâneo do Meta + leads do pixel no site. ROAS = faturamento ÷ investimento, com faturamento pelo ticket (compras × preço cheio) nas contas com ticket cadastrado e pelo valor do pixel nas demais; comissão usa o valor de compra registrado pelo pixel (em coprodução, é a sua comissão); faturamento pelo ticket = compras × preço cheio, só nas contas com ticket cadastrado; o ROAS fica verde a partir de 1x (a venda pagou o anúncio) e vermelho abaixo disso. Custo por conversa, lead e compra = investimento dividido pelo resultado. Dados do Meta Ads via Supermetrics, no fuso de Fortaleza.</p>
 </div>
 
 <script>
@@ -363,12 +363,13 @@
     description: 'Soma do período por conta e no total ("Todas"), com custos e taxas calculados a partir dos totais.',
     inputs: ['diario'],
     fn: (diario) => {
-      const sums = ['investimento', 'impressoes', 'cliques', 'conversas', 'leads_meta', 'leads_site', 'compras', 'valor_compras'];
+      const sums = ['investimento', 'impressoes', 'cliques', 'conversas', 'leads_meta', 'leads_site', 'compras', 'valor_compras', 'faturamento'];
+      const fat = (r) => { const tk = ({'Murilo Anúncios': 197})[r.conta]; return tk ? (Number(r.compras) || 0) * tk : Number(r.valor_compras) || 0; };
       const by = new Map();
       const add = (conta, r) => {
         if (!by.has(conta)) by.set(conta, Object.fromEntries([['conta', conta], ...sums.map((k) => [k, 0])]));
         const t = by.get(conta);
-        for (const k of sums) t[k] += Number(r[k]) || 0;
+        for (const k of sums) t[k] += k === 'faturamento' ? fat(r) : Number(r[k]) || 0;
       };
       add('Todas', {});
       for (const r of diario) {
@@ -388,7 +389,7 @@
           cpm: div(t.investimento * 1000, t.impressoes),
           ctr_link: div(t.cliques, t.impressoes),
           cpc_link: div(t.investimento, t.cliques),
-          roas: t.valor_compras > 0 ? t.valor_compras / t.investimento : null,
+          roas: t.faturamento > 0 && t.investimento > 0 ? t.faturamento / t.investimento : null,
         };
       });
     },
@@ -399,12 +400,13 @@
     description: 'Os mesmos totais e custos de "Totais por conta", no período anterior de mesmo tamanho.',
     inputs: ['anterior'],
     fn: (anterior) => {
-      const sums = ['investimento', 'impressoes', 'cliques', 'conversas', 'leads_meta', 'leads_site', 'compras', 'valor_compras'];
+      const sums = ['investimento', 'impressoes', 'cliques', 'conversas', 'leads_meta', 'leads_site', 'compras', 'valor_compras', 'faturamento'];
+      const fat = (r) => { const tk = ({'Murilo Anúncios': 197})[r.conta]; return tk ? (Number(r.compras) || 0) * tk : Number(r.valor_compras) || 0; };
       const by = new Map();
       const add = (conta, r) => {
         if (!by.has(conta)) by.set(conta, Object.fromEntries([['conta', conta], ...sums.map((k) => [k, 0])]));
         const t = by.get(conta);
-        for (const k of sums) t[k] += Number(r[k]) || 0;
+        for (const k of sums) t[k] += k === 'faturamento' ? fat(r) : Number(r[k]) || 0;
       };
       add('Todas', {});
       for (const r of anterior) {
@@ -424,7 +426,7 @@
           cpm: div(t.investimento * 1000, t.impressoes),
           ctr_link: div(t.cliques, t.impressoes),
           cpc_link: div(t.investimento, t.cliques),
-          roas: t.valor_compras > 0 ? t.valor_compras / t.investimento : null,
+          roas: t.faturamento > 0 && t.investimento > 0 ? t.faturamento / t.investimento : null,
         };
       });
     },
@@ -808,6 +810,8 @@
     if (g.status !== 'ok') return;
     const c = window.mx.conta();
     const f = window.mx.fmt;
+    const res = dash.data('resumo');
+    const rmap = new Map((res.status === 'ok' ? res.data : []).map((x) => [x.conta, x]));
     const rows = [...g.data].sort((a, b) => (Number(b.investimento) || 0) - (Number(a.investimento) || 0));
     for (const r of rows) {
       const tr = document.createElement('tr');
@@ -815,6 +819,7 @@
       tr.dataset.conta = r.conta;
       if (r.conta === c) tr.className = 'on';
       const idle = !isFinite(Number(r.investimento)) || !Number(r.investimento);
+      const ro = rmap.has(r.conta) ? Number(rmap.get(r.conta).roas) || 0 : 0;
       tr.append(
         cell(r.conta),
         cell(f(r.investimento, 'brl'), idle ? 'zero' : ''),
@@ -827,7 +832,7 @@
         cell(f(r.custo_conversa, 'brl')),
         cell(f(r.leads_meta, 'int'), 'opt'),
         cell(f(r.compras, 'int')),
-        cell(Number(r.roas) > 0 ? f(r.roas, 'x') : '—', Number(r.roas) > 0 ? (Number(r.roas) >= 1 ? 'mx-roas-pos' : 'mx-roas-neg') : ''),
+        cell(ro > 0 ? f(ro, 'x') : '—', ro > 0 ? (ro >= 1 ? 'mx-roas-pos' : 'mx-roas-neg') : ''),
       );
       tb.append(tr);
     }
